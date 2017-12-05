@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import inspect
 import os
 
 from cafe.configurator.managers import TestEnvManager
@@ -39,6 +40,19 @@ def pytest_configure(config):
         test_env.finalize()
         cclogging.init_root_log_handler()
         UnittestRunner.print_mug_and_paths(test_env)
+
+
+def pytest_collection_modifyitems(items, config):
+    selected_items = []
+    deselected_items = []
+
+    for item in items:
+        if item.parent and 'fixture' not in item.parent.name.lower():
+            selected_items.append(item)
+        else:
+            deselected_items.append(item)
+    config.hook.pytest_deselected(items=deselected_items)
+    items[:] = selected_items
 
 
 @pytest.fixture
