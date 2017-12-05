@@ -40,6 +40,10 @@ def pytest_configure(config):
         cclogging.init_root_log_handler()
         UnittestRunner.print_mug_and_paths(test_env)
 
+@pytest.hookimpl(tryfirst=True)
+def pytest_pycollect_makeitem(collector, name, obj):
+    if 'fixture' in name.lower():
+        return
 
 @pytest.fixture
 def bar(request):
