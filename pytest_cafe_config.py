@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import inspect
 import os
 
 from cafe.configurator.managers import TestEnvManager
